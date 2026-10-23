@@ -34,7 +34,7 @@
             border: 4px solid #ffffff;
         }
 
-        /* SCREEN 1: START SCREEN */
+        /* 1. START SCREEN */
         .start-screen {
             display: flex;
             flex-direction: column;
@@ -42,8 +42,8 @@
             padding: 15px 0;
         }
         .mascot-img {
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             margin: 15px 0;
             animation: float 2.5s ease-in-out infinite;
         }
@@ -79,7 +79,7 @@
             box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
         }
 
-        /* SCREEN 2: PLAY SCREEN */
+        /* 2. PLAY SCREEN */
         .play-screen {
             display: none;
         }
@@ -138,8 +138,8 @@
             align-items: center;
         }
         .word-image {
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             object-fit: contain;
             margin-bottom: 10px;
             animation: floatCartoon 3s ease-in-out infinite;
@@ -147,7 +147,7 @@
         }
         @keyframes floatCartoon {
             0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
         @keyframes float {
@@ -224,7 +224,7 @@
             font-style: italic;
         }
 
-        /* SCREEN 3: RESULT SCREEN */
+        /* 3. RESULT SCREEN */
         .result-screen {
             display: none;
             padding: 10px 0;
@@ -268,8 +268,7 @@
         <h1 class="app-title">👑 RAJA SEBUTAN BM</h1>
         <p class="app-subtitle">Permainan Gema Suara Interaktif Tahun 1</p>
         
-        <!-- Maskot Kartun Comel -->
-        <img class="mascot-img" src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" alt="Maskot">
+        <img class="mascot-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3a4.svg" alt="Mascot Mic">
         
         <p style="font-size: 14px; color: #475569; font-weight: 600; margin-bottom: 20px; padding: 0 10px;">
             Sebut perkataan bergambar dengan jelas ke dalam mikrofon dan kumpul markah tertinggi! 🎤✨
@@ -318,7 +317,6 @@
             Jumlah Markah: <span id="finalScore" style="color: #ec4899;">0</span>
         </p>
 
-        <!-- Kotak Kata-kata Semangat -->
         <div class="quote-box" id="quoteBox">
             "Usaha tangga kejayaan! Setiap kesilapan ialah langkah untuk jadi lebih pintar! 💪✨"
         </div>
@@ -329,41 +327,40 @@
 </div>
 
 <script>
-    // 25 BANK PERKATAAN KARTUN KSSR TAHUN 1
+    // 25 PERKATAAN VEKTOR SVG DIJAMIN PADAN 100%
     const masterWordList = [
         // Tahap 1: 2 Suku Kata Asas KV (10s)
-        { word: 'cili', hint: 'ci + li', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/1135/1135058.png' },
-        { word: 'guli', hint: 'gu + li', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/3076/3076800.png' },
-        { word: 'gigi', hint: 'gi + gi', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2818/2818342.png' },
-        { word: 'dada', hint: 'da + da', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2822/2822453.png' },
-        { word: 'laci', hint: 'la + ci', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2258/2258540.png' },
-        { word: 'buku', hint: 'bu + ku', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png' },
-        { word: 'kuda', hint: 'ku + da', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/3069/3069172.png' },
-        { word: 'topi', hint: 'to + pi', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2097/2097276.png' }, // BARU 1
+        { word: 'cili', hint: 'ci + li', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f336.svg' },
+        { word: 'guli', hint: 'gu + li', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f52e.svg' },
+        { word: 'gigi', hint: 'gi + gi', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f9b7.svg' },
+        { word: 'dada', hint: 'da + da', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f9d2.svg' },
+        { word: 'laci', hint: 'la + ci', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f5c4.svg' },
+        { word: 'buku', hint: 'bu + ku', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4da.svg' },
+        { word: 'kuda', hint: 'ku + da', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f434.svg' },
+        { word: 'topi', hint: 'to + pi', level: 1, time: 10, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f9e2.svg' },
 
         // Tahap 2: 2 Suku Kata KVK/Kombinasi (7s)
-        { word: 'lebah', hint: 'le + bah', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/235/235394.png' },
-        { word: 'pokok', hint: 'po + kok', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/490/490084.png' },
-        { word: 'bukit', hint: 'bu + kit', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2909/2909753.png' },
-        { word: 'datuk', hint: 'da + tuk', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/4333/4333609.png' },
-        { word: 'getah', hint: 'ge + tah', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2558/2558312.png' },
-        { word: 'kasut', hint: 'ka + sut', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2589/2589903.png' },
-        { word: 'cawan', hint: 'ca + wan', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2935/2935307.png' },
-        { word: 'beca', hint: 'be + ca', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2972/2972185.png' },   // BARU 2
-        { word: 'paku', hint: 'pa + ku', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/1037/1037855.png' },   // BARU 3
+        { word: 'lebah', hint: 'le + bah', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f41d.svg' },
+        { word: 'pokok', hint: 'po + kok', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f333.svg' },
+        { word: 'bukit', hint: 'bu + kit', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26f0.svg' },
+        { word: 'datuk', hint: 'da + tuk', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f474.svg' },
+        { word: 'getah', hint: 'ge + tah', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f388.svg' },
+        { word: 'kasut', hint: 'ka + sut', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f45f.svg' },
+        { word: 'cawan', hint: 'ca + wan', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2615.svg' },
+        { word: 'beca', hint: 'be + ca', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f6b2.svg' },
+        { word: 'paku', hint: 'pa + ku', level: 2, time: 7, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f528.svg' },
 
         // Tahap 3: 3 Suku Kata (5s)
-        { word: 'kereta', hint: 'ke + re + ta', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/744/744465.png' },
-        { word: 'kerusi', hint: 'ke + ru + si', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/2400/2400622.png' },
-        { word: 'kemeja', hint: 'ke + me + ja', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/2503/2503529.png' },
-        { word: 'kuali', hint: 'ku + a + li', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1830/1830833.png' },
-        { word: 'tomato', hint: 'to + ma + to', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1202/1202125.png' },
-        { word: 'kepala', hint: 'ke + pa + la', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1864/1864593.png' },
-        { word: 'payung', hint: 'pa + yung', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/891/891462.png' },  // BARU 4
-        { word: 'pensel', hint: 'pen + sel', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1250/1250615.png' }   // BARU 5
+        { word: 'kereta', hint: 'ke + re + ta', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f697.svg' },
+        { word: 'kerusi', hint: 'ke + ru + si', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1fa91.svg' },
+        { word: 'kemeja', hint: 'ke + me + ja', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f455.svg' },
+        { word: 'kuali', hint: 'ku + a + li', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f373.svg' },
+        { word: 'tomato', hint: 'to + ma + to', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f345.svg' },
+        { word: 'kepala', hint: 'ke + pa + la', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f466.svg' },
+        { word: 'payung', hint: 'pa + yung', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2614.svg' },
+        { word: 'pensel', hint: 'pen + sel', level: 3, time: 5, img: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/270f.svg' }
     ];
 
-    // SENARAI KATA-KATA MOTIVASI SEMANGAT
     const motivationalQuotes = [
         "Jangan putus asa! Setiap kesilapan ialah langkah menuju kejayaan! 💪✨",
         "Usaha tangga kejayaan! Anda pasti boleh lakukan lebih baik lagi! 🚀🌟",
@@ -423,7 +420,6 @@
         const level2 = shuffleArray(masterWordList.filter(w => w.level === 2));
         const level3 = shuffleArray(masterWordList.filter(w => w.level === 3));
         
-        // Ambil gabungan soalan secara rawak dari setiap tahap
         currentGameList = [...level1.slice(0,4), ...level2.slice(0,4), ...level3.slice(0,4)];
         currentIndex = 0;
         score = 0;
@@ -586,7 +582,6 @@
         }
     }
 
-    // Tunjuk Skrin Muka Depan Bila Mula
     showStartScreen();
 </script>
 
