@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raja Sebutan BM - Permainan Gema Suara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #fbc2eb 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 35px;
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
+            border: 4px solid #ffffff;
+        }
+
+        /* SCREEN 1: START SCREEN */
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 0;
+        }
+        .mascot-img {
+            width: 140px;
+            height: 140px;
+            margin: 15px 0;
+            animation: float 2.5s ease-in-out infinite;
+        }
+        .app-title {
+            font-family: 'Fredoka One', cursive;
+            color: #ec4899;
+            font-size: 32px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 0px #fbcfe8;
+        }
+        .app-subtitle {
+            font-size: 15px;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+        .btn-start {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 20px;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s ease;
+            letter-spacing: 1px;
+        }
+        .btn-start:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        /* SCREEN 2: PLAY SCREEN */
+        .play-screen {
+            display: none;
+        }
+        .header-title {
+            font-family: 'Fredoka One', cursive;
+            color: #8b5cf6;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 10px 18px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #334155;
+            font-size: 14px;
+        }
+        .lives { color: #ef4444; font-size: 18px; }
+        .level-badge {
+            background: #8b5cf6;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        /* Countdown Bar */
+        .timer-bar-container {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .timer-bar {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #ec4899 0%, #8b5cf6 100%);
+            transition: width 1s linear;
+        }
+
+        /* Cartoon Image Display & Word Box */
+        .word-card-container {
+            background: #fdf2f8;
+            border: 3px dashed #f472b6;
+            border-radius: 25px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .word-image {
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            animation: floatCartoon 3s ease-in-out infinite;
+            filter: drop-shadow(0px 8px 10px rgba(0,0,0,0.12));
+        }
+        @keyframes floatCartoon {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .target-word {
+            font-family: 'Fredoka One', cursive;
+            font-size: 46px;
+            color: #1e293b;
+            line-height: 1.1;
+        }
+        .syllable-hint {
+            font-size: 15px;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Mic Button */
+        .mic-btn-container {
+            margin: 12px 0;
+        }
+        .btn-mic {
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            font-size: 34px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        .btn-mic:hover { transform: scale(1.08); }
+        .btn-mic.listening {
+            animation: pulse 1.2s infinite;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.5);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* Status Feedback & Motivational Box */
+        .status-msg {
+            font-size: 15px;
+            font-weight: 700;
+            min-height: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 15px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        .status-msg.normal { color: #64748b; background: #f8fafc; }
+        .status-msg.correct { background: #d1fae5; color: #047857; }
+        .status-msg.wrong { background: #fee2e2; color: #b91c1c; }
+
+        .motive-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* SCREEN 3: RESULT SCREEN */
+        .result-screen {
+            display: none;
+            padding: 10px 0;
+        }
+        .result-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 32px;
+            color: #ec4899;
+            margin-bottom: 5px;
+        }
+        .quote-box {
+            background: #fff1f2;
+            border-left: 4px solid #ec4899;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #9f1239;
+        }
+        .btn-restart {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 18px;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-card">
+    
+    <!-- 1. MUKA DEPAN (START SCREEN) -->
+    <div class="start-screen" id="startScreen">
+        <h1 class="app-title">👑 RAJA SEBUTAN BM</h1>
+        <p class="app-subtitle">Permainan Gema Suara Interaktif Tahun 1</p>
+        
+        <!-- Maskot Kartun Comel -->
+        <img class="mascot-img" src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" alt="Maskot">
+        
+        <p style="font-size: 14px; color: #475569; font-weight: 600; margin-bottom: 20px; padding: 0 10px;">
+            Sebut perkataan bergambar dengan jelas ke dalam mikrofon dan kumpul markah tertinggi! 🎤✨
+        </p>
+        
+        <button class="btn-start" onclick="startGame()">🎮 MULA BERMAIN</button>
+    </div>
+
+    <!-- 2. SKRIN PERMAINAN (PLAY SCREEN) -->
+    <div class="play-screen" id="playScreen">
+        <h1 class="header-title">🎤 Cabaran Gema Suara</h1>
+        
+        <div class="status-bar">
+            <div>Nyawa: <span class="lives" id="livesDisplay">❤️❤️❤️</span></div>
+            <div class="level-badge" id="levelBadge">TAHAP 1</div>
+            <div>Markah: <span id="scoreDisplay" style="color:#ec4899;">0</span></div>
+        </div>
+
+        <div class="timer-bar-container">
+            <div class="timer-bar" id="timerBar"></div>
+        </div>
+
+        <div class="word-card-container">
+            <img id="wordImage" class="word-image" src="" alt="Gambar Kartun">
+            <div class="target-word" id="targetWord">cili</div>
+            <div class="syllable-hint" id="syllableHint">Sebut: ci + li</div>
+        </div>
+
+        <div class="mic-btn-container">
+            <button class="btn-mic" id="micBtn" onclick="startRecognition()">🎙️</button>
+        </div>
+
+        <div class="status-msg normal" id="statusMsg">
+            <span>Tekan mikrofon & sebut!</span>
+        </div>
+    </div>
+
+    <!-- 3. SKRIN KEPUTUSAN (RESULT SCREEN) -->
+    <div class="result-screen" id="resultScreen">
+        <h1 class="result-title" id="resultTitle">TAHNIAH! 🎉</h1>
+        <p id="resultDesc" style="font-weight: 600; color: #475569;">Anda telah tamat permainan!</p>
+        
+        <div style="font-size: 45px; margin: 10px 0;" id="starsDisplay">⭐⭐⭐</div>
+        
+        <p style="font-size: 20px; font-weight: 700; color: #1e293b;">
+            Jumlah Markah: <span id="finalScore" style="color: #ec4899;">0</span>
+        </p>
+
+        <!-- Kotak Kata-kata Semangat -->
+        <div class="quote-box" id="quoteBox">
+            "Usaha tangga kejayaan! Setiap kesilapan ialah langkah untuk jadi lebih pintar! 💪✨"
+        </div>
+
+        <button class="btn-restart" onclick="showStartScreen()">🔄 Main Lagi</button>
+    </div>
+
+</div>
+
+<script>
+    // 25 BANK PERKATAAN KARTUN KSSR TAHUN 1
+    const masterWordList = [
+        // Tahap 1: 2 Suku Kata Asas KV (10s)
+        { word: 'cili', hint: 'ci + li', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/1135/1135058.png' },
+        { word: 'guli', hint: 'gu + li', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/3076/3076800.png' },
+        { word: 'gigi', hint: 'gi + gi', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2818/2818342.png' },
+        { word: 'dada', hint: 'da + da', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2822/2822453.png' },
+        { word: 'laci', hint: 'la + ci', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2258/2258540.png' },
+        { word: 'buku', hint: 'bu + ku', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png' },
+        { word: 'kuda', hint: 'ku + da', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/3069/3069172.png' },
+        { word: 'topi', hint: 'to + pi', level: 1, time: 10, img: 'https://cdn-icons-png.flaticon.com/512/2097/2097276.png' }, // BARU 1
+
+        // Tahap 2: 2 Suku Kata KVK/Kombinasi (7s)
+        { word: 'lebah', hint: 'le + bah', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/235/235394.png' },
+        { word: 'pokok', hint: 'po + kok', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/490/490084.png' },
+        { word: 'bukit', hint: 'bu + kit', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2909/2909753.png' },
+        { word: 'datuk', hint: 'da + tuk', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/4333/4333609.png' },
+        { word: 'getah', hint: 'ge + tah', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2558/2558312.png' },
+        { word: 'kasut', hint: 'ka + sut', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2589/2589903.png' },
+        { word: 'cawan', hint: 'ca + wan', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2935/2935307.png' },
+        { word: 'beca', hint: 'be + ca', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/2972/2972185.png' },   // BARU 2
+        { word: 'paku', hint: 'pa + ku', level: 2, time: 7, img: 'https://cdn-icons-png.flaticon.com/512/1037/1037855.png' },   // BARU 3
+
+        // Tahap 3: 3 Suku Kata (5s)
+        { word: 'kereta', hint: 'ke + re + ta', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/744/744465.png' },
+        { word: 'kerusi', hint: 'ke + ru + si', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/2400/2400622.png' },
+        { word: 'kemeja', hint: 'ke + me + ja', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/2503/2503529.png' },
+        { word: 'kuali', hint: 'ku + a + li', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1830/1830833.png' },
+        { word: 'tomato', hint: 'to + ma + to', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1202/1202125.png' },
+        { word: 'kepala', hint: 'ke + pa + la', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1864/1864593.png' },
+        { word: 'payung', hint: 'pa + yung', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/891/891462.png' },  // BARU 4
+        { word: 'pensel', hint: 'pen + sel', level: 3, time: 5, img: 'https://cdn-icons-png.flaticon.com/512/1250/1250615.png' }   // BARU 5
+    ];
+
+    // SENARAI KATA-KATA MOTIVASI SEMANGAT
+    const motivationalQuotes = [
+        "Jangan putus asa! Setiap kesilapan ialah langkah menuju kejayaan! 💪✨",
+        "Usaha tangga kejayaan! Anda pasti boleh lakukan lebih baik lagi! 🚀🌟",
+        "Hebat! Pengalaman ini membuatkan anda makin pintar membaca! 📚💡",
+        "Bintang takkan bersinar tanpa kegelapan. Teruskan mencuba! ⭐🌈",
+        "Membaca itu jambatan ilmu. Jom cuba sekali lagi dengan gembira! 🎉❤️"
+    ];
+
+    let currentGameList = [];
+    let currentIndex = 0;
+    let score = 0;
+    let lives = 3;
+    let timer;
+    let timeLeft;
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.25);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.25);
+        } else if (type === 'wrong') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+    }
+
+    function getRandomQuote() {
+        return motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+    }
+
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function showStartScreen() {
+        document.getElementById('startScreen').style.display = 'flex';
+        document.getElementById('playScreen').style.display = 'none';
+        document.getElementById('resultScreen').style.display = 'none';
+    }
+
+    function startGame() {
+        const level1 = shuffleArray(masterWordList.filter(w => w.level === 1));
+        const level2 = shuffleArray(masterWordList.filter(w => w.level === 2));
+        const level3 = shuffleArray(masterWordList.filter(w => w.level === 3));
+        
+        // Ambil gabungan soalan secara rawak dari setiap tahap
+        currentGameList = [...level1.slice(0,4), ...level2.slice(0,4), ...level3.slice(0,4)];
+        currentIndex = 0;
+        score = 0;
+        lives = 3;
+
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('playScreen').style.display = 'block';
+        document.getElementById('resultScreen').style.display = 'none';
+        
+        updateLivesDisplay();
+        loadWord();
+    }
+
+    function updateLivesDisplay() {
+        let hearts = '';
+        for (let i = 0; i < lives; i++) hearts += '❤️';
+        document.getElementById('livesDisplay').innerText = hearts || '💔';
+    }
+
+    function loadWord() {
+        if (currentIndex >= currentGameList.length || lives <= 0) {
+            endGame();
+            return;
+        }
+
+        const item = currentGameList[currentIndex];
+        document.getElementById('targetWord').innerText = item.word;
+        document.getElementById('syllableHint').innerText = `Sebut: ${item.hint}`;
+        document.getElementById('wordImage').src = item.img;
+        document.getElementById('levelBadge').innerText = `TAHAP ${item.level}`;
+        document.getElementById('scoreDisplay').innerText = score;
+
+        const statusMsg = document.getElementById('statusMsg');
+        statusMsg.innerHTML = "<span>Tekan mikrofon & sebut!</span>";
+        statusMsg.className = "status-msg normal";
+
+        resetTimer(item.time);
+    }
+
+    function resetTimer(seconds) {
+        clearInterval(timer);
+        timeLeft = seconds;
+        const timerBar = document.getElementById('timerBar');
+        timerBar.style.width = '100%';
+
+        timer = setInterval(() => {
+            timeLeft--;
+            timerBar.style.width = `${(timeLeft / seconds) * 100}%`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                playSound('wrong');
+                lives--;
+                updateLivesDisplay();
+
+                const statusMsg = document.getElementById('statusMsg');
+                statusMsg.innerHTML = `<span>⏰ Masa Tamat! Nyawa berkurang.</span><div class="motive-text">${getRandomQuote()}</div>`;
+                statusMsg.className = "status-msg wrong";
+
+                if (lives <= 0) {
+                    setTimeout(endGame, 1800);
+                } else {
+                    setTimeout(nextWord, 1800);
+                }
+            }
+        }, 1000);
+    }
+
+    function startRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            alert("Pelayar web ini tidak menyokong pengecaman suara. Sila gunakan Google Chrome.");
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ms-MY';
+        recognition.interimResults = false;
+
+        const micBtn = document.getElementById('micBtn');
+        const statusMsg = document.getElementById('statusMsg');
+
+        micBtn.classList.add('listening');
+        statusMsg.innerHTML = "<span>🎧 Mendengar suara anda...</span>";
+        statusMsg.className = "status-msg normal";
+
+        recognition.start();
+
+        recognition.onresult = function(event) {
+            micBtn.classList.remove('listening');
+            clearInterval(timer);
+
+            const spokenWord = event.results[0][0].transcript.toLowerCase().trim();
+            const currentTarget = currentGameList[currentIndex].word;
+
+            if (spokenWord.includes(currentTarget)) {
+                playSound('correct');
+                score += (currentGameList[currentIndex].level * 10);
+                
+                statusMsg.innerHTML = `<span>✅ BETUL! ("${spokenWord}")</span>`;
+                statusMsg.className = "status-msg correct";
+
+                setTimeout(nextWord, 1200);
+            } else {
+                playSound('wrong');
+                lives--;
+                updateLivesDisplay();
+
+                statusMsg.innerHTML = `<span>❌ SALAH! (Aplikasi dengar: "${spokenWord}")</span><div class="motive-text">${getRandomQuote()}</div>`;
+                statusMsg.className = "status-msg wrong";
+
+                if (lives <= 0) {
+                    setTimeout(endGame, 2000);
+                } else {
+                    setTimeout(nextWord, 2000);
+                }
+            }
+        };
+
+        recognition.onerror = function() {
+            micBtn.classList.remove('listening');
+            statusMsg.innerHTML = "<span>⚠️ Masalah mengesan suara. Sila cuba lagi!</span>";
+            statusMsg.className = "status-msg wrong";
+        };
+
+        recognition.onend = function() {
+            micBtn.classList.remove('listening');
+        };
+    }
+
+    function nextWord() {
+        currentIndex++;
+        loadWord();
+    }
+
+    function endGame() {
+        clearInterval(timer);
+        document.getElementById('playScreen').style.display = 'none';
+        document.getElementById('resultScreen').style.display = 'block';
+        document.getElementById('finalScore').innerText = score;
+
+        const resultTitle = document.getElementById('resultTitle');
+        const resultDesc = document.getElementById('resultDesc');
+        const starsDisplay = document.getElementById('starsDisplay');
+        const quoteBox = document.getElementById('quoteBox');
+
+        quoteBox.innerText = getRandomQuote();
+
+        if (lives > 0) {
+            resultTitle.innerText = "TAHNIAH! 🎉";
+            resultDesc.innerText = "Anda berjaya menamatkan Misi Membaca!";
+            if (score >= 180) starsDisplay.innerText = "⭐⭐⭐ (Cemerlang!)";
+            else if (score >= 100) starsDisplay.innerText = "⭐⭐ (Bagus!)";
+            else starsDisplay.innerText = "⭐ (Cuba Lagi!)";
+        } else {
+            resultTitle.innerText = "GAME OVER 💔";
+            resultDesc.innerText = "Nyawa anda telah habis.";
+            starsDisplay.innerText = "⭐ (Teruskan Usaha!)";
+        }
+    }
+
+    // Tunjuk Skrin Muka Depan Bila Mula
+    showStartScreen();
+</script>
+
+</body>
+</html>
